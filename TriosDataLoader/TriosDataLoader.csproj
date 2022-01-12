@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="Castle.Windsor" Version="5.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataLoader\DataLoader.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
