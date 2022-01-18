@@ -16,3 +16,12 @@ C:\Users\Igor Borovenko\Desktop\ShitPump\DataLoader\obj\Debug\netstandard2.1\Dat
 C:\Users\Igor Borovenko\Desktop\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.csproj.CoreCompileInputs.cache
 C:\Users\Igor Borovenko\Desktop\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.dll
 C:\Users\Igor Borovenko\Desktop\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.pdb
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.AssemblyInfoInputs.cache
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.AssemblyInfo.cs
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.csproj.CoreCompileInputs.cache
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\bin\Debug\netstandard2.1\DataLoader.deps.json
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\bin\Debug\netstandard2.1\DataLoader.dll
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\bin\Debug\netstandard2.1\DataLoader.pdb
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.dll
+C:\Users\Igor Borovenko\Source\Repos\IgorBorovenko\ShitPump\DataLoader\obj\Debug\netstandard2.1\DataLoader.pdb

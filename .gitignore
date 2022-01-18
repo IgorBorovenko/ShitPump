@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/DataLoader/obj/Release/netstandard2.1
+/TriosDataLoader/obj/Debug/netcoreapp3.1
+/TriosDataLoader/obj/Release/netcoreapp3.1

@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj": {}
+    "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\DataLoader\\DataLoader.csproj": {
+    "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\DataLoader\\DataLoader.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\DataLoader\\DataLoader.csproj",
+        "projectUniqueName": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\DataLoader\\DataLoader.csproj",
         "projectName": "DataLoader",
-        "projectPath": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\DataLoader\\DataLoader.csproj",
+        "projectPath": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\DataLoader\\DataLoader.csproj",
         "packagesPath": "C:\\Users\\Igor Borovenko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\DataLoader\\obj\\",
+        "outputPath": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\DataLoader\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\Igor Borovenko\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "http://teamcity.bi.3shape.local/guestAuth/app/nuget/feed/_Root/Releases/v3/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,10 +44,6 @@
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
           "dependencies": {
-            "3Shape.Common.Data": {
-              "target": "Package",
-              "version": "[1.0.7, )"
-            },
             "AutoMapper": {
               "target": "Package",
               "version": "[11.0.0, )"
@@ -80,24 +76,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj": {
+    "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj",
+        "projectUniqueName": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj",
         "projectName": "TriosDataLoader",
-        "projectPath": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj",
+        "projectPath": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\TriosDataLoader\\TriosDataLoader.csproj",
         "packagesPath": "C:\\Users\\Igor Borovenko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\TriosDataLoader\\obj\\",
+        "outputPath": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\TriosDataLoader\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\Igor Borovenko\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -105,15 +102,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "http://teamcity.bi.3shape.local/guestAuth/app/nuget/feed/_Root/Releases/v3/index.json": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\DataLoader\\DataLoader.csproj": {
-                "projectPath": "C:\\Users\\Igor Borovenko\\Desktop\\ShitPump\\DataLoader\\DataLoader.csproj"
+              "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\DataLoader\\DataLoader.csproj": {
+                "projectPath": "C:\\Users\\Igor Borovenko\\Source\\Repos\\IgorBorovenko\\ShitPump\\DataLoader\\DataLoader.csproj"
               }
             }
           }
@@ -176,7 +172,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }
