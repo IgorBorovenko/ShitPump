@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using Dapper;
-using ThreeShape.Common.Data;
 
 namespace DataLoader.Destination
 {
