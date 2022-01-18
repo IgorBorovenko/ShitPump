@@ -26,13 +26,24 @@ namespace DataLoader.Destination
             _connection = new SqlConnection(connectionString);
             _connection.Open();
             _commandTimeout = commandTimeout;
-
+            
+            string sql = @"
+SELECT COLUMN_NAME, ORDINAL_POSITION 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_SCHEMA = 'DentalDesktopTRIOS' AND TABLE_NAME = 'ScanWorkflowScanSegment' 
+ORDER BY ORDINAL_POSITION";
+            var columns = _connection.Query<(string COLUMN_NAME, int ORDINAL_POSITION)> (sql);
+            
             try
             {
                 var properties = typeof(T).GetProperties().ToList();
-                var propertyAttributeWithGetters = properties.Select(x => 
-                    ((ColumnAttribute)x.GetCustomAttributes(typeof(ColumnAttribute), false).First(), (Func<T, object>)(y => x.GetValue(y)))).ToList();
-                Mappings = propertyAttributeWithGetters.OrderBy(x => x.Item1.Order).Select(x => x.Item2).ToArray();
+
+                foreach (var column in columns)
+                {
+                    var property = properties.Single(x => x.GetCustomAttributes(typeof(ColumnAttribute), false).OfType<ColumnAttribute>().Single().Name == column.COLUMN_NAME);
+                    var getter = new Func<T, object>(x => property.GetValue(x)); //refactor with Expressions
+                    Mappings.Append(getter);
+                }
             }
             catch (Exception e)
             {
@@ -59,7 +70,18 @@ namespace DataLoader.Destination
                 bulk.BulkCopyTimeout = _commandTimeout;
                 bulk.NotifyAfter = BulkNotifyAfter;
                 bulk.SqlRowsCopied += (sender, args) => Serilog.Log.Verbose("{0} rows copied", args.RowsCopied);
-                var dataReaderWrapper = new DataReaderWrapper<T>(newUsages, Mappings, bulk);
+
+                var sourceColumnIndex = 0;
+                var destinationColumnIndex = 0;
+                foreach (var mapping in Mappings)
+                {
+                    if (!(mapping is null))
+                        bulk.ColumnMappings.Add(sourceColumnIndex, destinationColumnIndex);
+                    sourceColumnIndex++;
+                    destinationColumnIndex++;
+                }
+
+                var dataReaderWrapper = new DataReaderWrapper<T>(newUsages, Mappings);
                 bulk.WriteToServer(dataReaderWrapper);
 
                 if (dataReaderWrapper.RecordsAffected > 0)

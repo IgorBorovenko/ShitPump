@@ -12,20 +12,10 @@ namespace DataLoader
         private readonly IEnumerator<T> _entities;
         private readonly List<Func<T, object>> _mappings;
 
-        public DataReaderWrapper(IEnumerable<T> entities, IEnumerable<Func<T, object>> mappings, SqlBulkCopy sqlBulkCopy)
+        public DataReaderWrapper(IEnumerable<T> entities, IEnumerable<Func<T, object>> mappings)
         {
             _entities = entities.GetEnumerator();
             _mappings = mappings.ToList();
-
-            var sourceColumnIndex = 0;
-            var destinationColumnIndex = 0;
-            foreach (var mapping in _mappings)
-            {
-                if (!(mapping is null))
-                    sqlBulkCopy.ColumnMappings.Add(sourceColumnIndex, destinationColumnIndex);
-                sourceColumnIndex++;
-                destinationColumnIndex++;
-            }
         }
 
         public int FieldCount => _mappings.Count;
