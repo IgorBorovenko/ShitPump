@@ -8,6 +8,7 @@ using Dapper;
 
 namespace DataLoader.Source
 {
+    //TODO: inject RowVersionBatchSplitter
     public class SourceTableSqlRepository<T> : RowVersionBatchSplitter<T>, IDisposable where T: ITableRecord
     {
         private readonly SqlConnection _connection;
