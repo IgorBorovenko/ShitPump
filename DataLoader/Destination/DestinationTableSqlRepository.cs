@@ -30,20 +30,21 @@ namespace DataLoader.Destination
             string sql = @"
 SELECT COLUMN_NAME, ORDINAL_POSITION 
 FROM INFORMATION_SCHEMA.COLUMNS 
-WHERE TABLE_SCHEMA = 'DentalDesktopTRIOS' AND TABLE_NAME = 'ScanWorkflowScanSegment' 
+WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name
 ORDER BY ORDINAL_POSITION";
-            var columns = _connection.Query<(string COLUMN_NAME, int ORDINAL_POSITION)> (sql);
+            var columns = _connection.Query<(string COLUMN_NAME, int ORDINAL_POSITION)> (sql, new { Name = this.Name });
             
             try
             {
                 var properties = typeof(T).GetProperties().ToList();
-
+                var mappings = new List<Func<T, object>>();
                 foreach (var column in columns)
                 {
                     var property = properties.Single(x => x.GetCustomAttributes(typeof(ColumnAttribute), false).OfType<ColumnAttribute>().Single().Name == column.COLUMN_NAME);
                     var getter = new Func<T, object>(x => property.GetValue(x)); //refactor with Expressions
-                    Mappings.Append(getter);
+                    mappings.Add(getter);
                 }
+                Mappings = mappings.ToArray();
             }
             catch (Exception e)
             {

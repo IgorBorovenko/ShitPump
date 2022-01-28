@@ -30,20 +30,18 @@ namespace DataLoader
     public class ColumnAttribute : Attribute
     {
         public string Name { get; }
-        public int Order { get; }
 
-        public ColumnAttribute(string name, int order = 0)
+        public ColumnAttribute(string name)
         {
             Name = name;
-            Order = order;
         }
     }
 
     [AttributeUsage(AttributeTargets.Property)]
     public class RowVersionColumnAttribute : ColumnAttribute
     {
-        public RowVersionColumnAttribute(string name, int order = 0)
-            :base(name, order)
+        public RowVersionColumnAttribute(string name)
+            :base(name)
         {
         }
     }
@@ -51,8 +49,8 @@ namespace DataLoader
     [AttributeUsage(AttributeTargets.Property)]
     public class WholeLoadSucceededColumnAttribute : ColumnAttribute
     {
-        public WholeLoadSucceededColumnAttribute(string name, int order = 0)
-            : base(name, order)
+        public WholeLoadSucceededColumnAttribute(string name)
+            : base(name)
         {
         }
     }

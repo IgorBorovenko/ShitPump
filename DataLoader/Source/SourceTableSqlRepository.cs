@@ -29,7 +29,7 @@ namespace DataLoader.Source
         
         public override IEnumerable<T> GetRows(byte[] rowVersionFrom, byte[] rowVersionTo, CancellationToken token)
         {
-            var columnsClause = string.Join(",", _columns.OrderBy(x => x.Order).Select(x => x.Name));
+            var columnsClause = string.Join(",", _columns.Select(x => x.Name));
             var sql = $"SELECT {columnsClause} FROM {_table.Name} WHERE @RowVersionFrom < {_rowVersionColumn.Name} AND {_rowVersionColumn.Name} <= @RowVersionTo";
 
             var command = new CommandDefinition(sql,
