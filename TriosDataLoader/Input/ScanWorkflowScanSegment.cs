@@ -6,16 +6,16 @@ namespace TriosDataLoader.Input
     [Table("[DentalDesktopTRIOS].[ScanWorkflowScanSegment]")]
     public class ScanWorkflowScanSegment: ITableRecord
     {
-        [Column("[ScanWorkflowScanSegmentID]")]
+        [Column("ScanWorkflowScanSegmentID")]
         public Guid ScanWorkflowScanSegmentID { get; set; }
 
-        [Column("[ScanWorkflowScanID]")]
+        [Column("ScanWorkflowScanID")]
         public Guid ScanWorkflowScanID { get; set; }
 
-        [Column("[ScannerSerialNumber]")]
+        [Column("ScannerSerialNumber")]
         public string ScannerSerialNumber { get; set; }
 
-        [RowVersionColumn("[RowVersion]")]
+        [RowVersionColumn("RowVersion")]
         public byte[] RowVersion { get; set; }
     }
 }

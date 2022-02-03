@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using Dapper;
 
@@ -46,13 +47,14 @@ WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name";
 
         private static Func<T, object>[] MakeOrderedGetters(IEnumerable<(string COLUMN_NAME, int ORDINAL_POSITION)> columns)
         {
-            var properties = typeof(T).GetProperties().ToList();
             var mappings = new List<Func<T, object>>();
             foreach (var column in columns.OrderBy(x => x.ORDINAL_POSITION))
             {
-                var property = properties.Single(x => x.GetCustomAttributes(typeof(ColumnAttribute), false).Cast<ColumnAttribute>().Single().Name == column.COLUMN_NAME);
-                var getter = new Func<T, object>(x => property.GetValue(x)); //refactor with Expressions
-                mappings.Add(getter);
+                var input = Expression.Parameter(typeof(T), "input");
+                var getProperty = Expression.Property(input, column.COLUMN_NAME);//TODO: how to use custom attributes w/o reflection?
+                var castToObject = Expression.TypeAs(getProperty, typeof(object));
+                var lambda = Expression.Lambda<Func<T, object>>(castToObject, input).Compile();
+                mappings.Add(lambda);
             }
 
             return mappings.ToArray();

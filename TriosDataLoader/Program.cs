@@ -30,15 +30,17 @@ namespace TriosDataLoader
 
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", false).Build();
 
-            var container = new WindsorContainer();
-            container.Install(
-                new WindsorInstaller(configuration),
-                new AutoMapperInstaller(configuration),
-                new ScanWorkflowScanSegmentInstaller(configuration)
-            );
+            
 
             try
             {
+                var container = new WindsorContainer();
+                container.Install(
+                    new WindsorInstaller(configuration),
+                    new AutoMapperInstaller(configuration),
+                    new ScanWorkflowScanSegmentInstaller(configuration)
+                );
+
                 DoJob(container);
             }
             catch (Exception e)

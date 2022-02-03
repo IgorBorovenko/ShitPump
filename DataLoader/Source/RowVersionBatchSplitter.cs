@@ -63,7 +63,7 @@ namespace DataLoader.Source
                     var rvTo = UlongToRowVersion(batchEnd);
                     Log.Verbose("Querying batch #{0}, rows between RowVersions \"{1}\" and \"{2}\"", i, ByteArrayToString(rvFrom), ByteArrayToString(rvTo));
                     yield return GetRows(rvFrom, rvTo, token);
-                    batchStart += _options.FullLoadingBatchIncrement;
+                    batchStart += _options.FullLoadingBatchIncrement + 1;
                     batchEnd += _options.FullLoadingBatchIncrement;
                     i++;
                 }
@@ -84,7 +84,7 @@ namespace DataLoader.Source
                         var rvTo = UlongToRowVersion(batchStart + batchIncrement);
                         Log.Verbose("Querying batch #{0}, rows between RowVersions \"{1}\" and \"{2}\"", i, ByteArrayToString(rvFrom), ByteArrayToString(rvTo));
                         yield return GetRows(rvFrom, rvTo, token);
-                        batchStart += batchIncrement;
+                        batchStart += batchIncrement + 1;
                     }
                 }
                 else
@@ -101,7 +101,7 @@ namespace DataLoader.Source
                         var rvTo = UlongToRowVersion(batchEnd);
                         Log.Verbose("Querying batch #{0}, rows between RowVersions \"{1}\" and \"{2}\"", i, ByteArrayToString(rvFrom), ByteArrayToString(rvTo));
                         yield return GetRows(rvFrom, rvTo, token);
-                        batchStart += _options.IncrementalLoadingBatchIncrement;
+                        batchStart += _options.IncrementalLoadingBatchIncrement + 1;
                         batchEnd += _options.IncrementalLoadingBatchIncrement;
                         i++;
                     }
