@@ -30,27 +30,32 @@ namespace DataLoader.Destination
             string sql = @"
 SELECT COLUMN_NAME, ORDINAL_POSITION 
 FROM INFORMATION_SCHEMA.COLUMNS 
-WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name
-ORDER BY ORDINAL_POSITION";
+WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name";
             var columns = _connection.Query<(string COLUMN_NAME, int ORDINAL_POSITION)> (sql, new { Name = this.Name });
             
             try
             {
-                var properties = typeof(T).GetProperties().ToList();
-                var mappings = new List<Func<T, object>>();
-                foreach (var column in columns)
-                {
-                    var property = properties.Single(x => x.GetCustomAttributes(typeof(ColumnAttribute), false).OfType<ColumnAttribute>().Single().Name == column.COLUMN_NAME);
-                    var getter = new Func<T, object>(x => property.GetValue(x)); //refactor with Expressions
-                    mappings.Add(getter);
-                }
-                Mappings = mappings.ToArray();
+                Mappings = TransformToOrderedGetters(columns);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        private static Func<T, object>[] TransformToOrderedGetters(IEnumerable<(string COLUMN_NAME, int ORDINAL_POSITION)> columns)
+        {
+            var properties = typeof(T).GetProperties().ToList();
+            var mappings = new List<Func<T, object>>();
+            foreach (var column in columns.OrderBy(x => x.ORDINAL_POSITION))
+            {
+                var property = properties.Single(x => x.GetCustomAttributes(typeof(ColumnAttribute), false).Cast<ColumnAttribute>().Single().Name == column.COLUMN_NAME);
+                var getter = new Func<T, object>(x => property.GetValue(x)); //refactor with Expressions
+                mappings.Add(getter);
+            }
+
+            return mappings.ToArray();
         }
 
         public virtual byte[] GetMaxRowVersion()
