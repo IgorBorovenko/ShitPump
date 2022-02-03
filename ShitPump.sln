@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLoader", "DataLoader\DataLoader.csproj", "{F9E5CA94-2943-4F4C-BFC0-46A1DE997D48}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriosDataLoader", "TriosDataLoader\TriosDataLoader.csproj", "{791DD4B7-D6C2-4A1C-8BC5-FE1D3A7228D1}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Source", "Source\Source.sqlproj", "{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Destination", "Destination\Destination.sqlproj", "{B0924481-5A80-4920-AB76-DFDB50976364}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,18 @@ Global
 		{791DD4B7-D6C2-4A1C-8BC5-FE1D3A7228D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{791DD4B7-D6C2-4A1C-8BC5-FE1D3A7228D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{791DD4B7-D6C2-4A1C-8BC5-FE1D3A7228D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBC56DB-2845-4B3C-90E6-951EA4E356A4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B0924481-5A80-4920-AB76-DFDB50976364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0924481-5A80-4920-AB76-DFDB50976364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0924481-5A80-4920-AB76-DFDB50976364}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B0924481-5A80-4920-AB76-DFDB50976364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0924481-5A80-4920-AB76-DFDB50976364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0924481-5A80-4920-AB76-DFDB50976364}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

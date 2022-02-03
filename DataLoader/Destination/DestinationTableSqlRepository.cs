@@ -35,7 +35,7 @@ WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name";
             
             try
             {
-                Mappings = TransformToOrderedGetters(columns);
+                Mappings = MakeOrderedGetters(columns);
             }
             catch (Exception e)
             {
@@ -44,7 +44,7 @@ WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name";
             }
         }
 
-        private static Func<T, object>[] TransformToOrderedGetters(IEnumerable<(string COLUMN_NAME, int ORDINAL_POSITION)> columns)
+        private static Func<T, object>[] MakeOrderedGetters(IEnumerable<(string COLUMN_NAME, int ORDINAL_POSITION)> columns)
         {
             var properties = typeof(T).GetProperties().ToList();
             var mappings = new List<Func<T, object>>();
