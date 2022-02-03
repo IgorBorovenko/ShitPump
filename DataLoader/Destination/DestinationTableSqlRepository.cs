@@ -29,14 +29,15 @@ namespace DataLoader.Destination
             _commandTimeout = commandTimeout;
             
             string sql = @"
-SELECT COLUMN_NAME, ORDINAL_POSITION 
+SELECT COLUMN_NAME
 FROM INFORMATION_SCHEMA.COLUMNS 
-WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name";
-            var columns = _connection.Query<(string COLUMN_NAME, int ORDINAL_POSITION)> (sql, new { Name = this.Name });
+WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name
+ORDER BY ORDINAL_POSITION";
+            var columns = _connection.Query<string> (sql, new { Name = this.Name });
             
             try
             {
-                Mappings = MakeOrderedGetters(columns);
+                Mappings = MakeGetters(columns);
             }
             catch (Exception e)
             {
@@ -45,15 +46,20 @@ WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name";
             }
         }
 
-        private static Func<T, object>[] MakeOrderedGetters(IEnumerable<(string COLUMN_NAME, int ORDINAL_POSITION)> columns)
+        private static Func<T, object>[] MakeGetters(IEnumerable<string> columns)
         {
+            var properties = typeof(T).GetProperties().ToList();
             var mappings = new List<Func<T, object>>();
-            foreach (var column in columns.OrderBy(x => x.ORDINAL_POSITION))
+
+            foreach (var column in columns)
             {
+                var property = properties.Single(x => x.GetCustomAttributes(typeof(ColumnAttribute), false).Cast<ColumnAttribute>().Single().Name == column);
+
                 var input = Expression.Parameter(typeof(T), "input");
-                var getProperty = Expression.Property(input, column.COLUMN_NAME);//TODO: how to use custom attributes w/o reflection?
+                var getProperty = Expression.Property(input, property.Name);
                 var castToObject = Expression.TypeAs(getProperty, typeof(object));
                 var lambda = Expression.Lambda<Func<T, object>>(castToObject, input).Compile();
+                
                 mappings.Add(lambda);
             }
 
