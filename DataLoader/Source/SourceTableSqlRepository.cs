@@ -27,13 +27,13 @@ namespace DataLoader.Source
             _commandTimeout = commandTimeout;
         }
         
-        public override IEnumerable<T> GetRows(byte[] rowVersionFrom, byte[] rowVersionTo, CancellationToken token)
+        public override IEnumerable<T> GetRows(byte[] rowVersionFrom, byte[] rowVersionTo = default, CancellationToken token = default)
         {
             var columnsClause = string.Join(",", _columns.Select(x => x.Name));
-            var sql = $"SELECT {columnsClause} FROM {_table.Name} WHERE @RowVersionFrom <= {_rowVersionColumn.Name} AND {_rowVersionColumn.Name} <= @RowVersionTo";
+            var sql = $"SELECT {columnsClause} FROM {_table.Name} WHERE @RowVersionFrom < {_rowVersionColumn.Name} AND {_rowVersionColumn.Name} <= @RowVersionTo";
 
             var command = new CommandDefinition(sql,
-                new { RowVersionFrom = rowVersionFrom, RowVersionTo = rowVersionTo },
+                new { RowVersionFrom = rowVersionFrom, RowVersionTo = rowVersionTo == default ? new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } : rowVersionTo },
                 null,
                 _commandTimeout,
                 CommandType.Text,

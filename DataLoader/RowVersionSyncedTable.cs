@@ -5,11 +5,6 @@ using Serilog;
 
 namespace DataLoader
 {
-    public interface ISyncedTable<T1, T2>
-    {
-        int Sync(CancellationToken token = default);
-    }
-
     public class RowVersionSyncedTable<T1,T2>: ISyncedTable<T1, T2>
     {
         private readonly IBatchableSource<byte[], T1> _source;
@@ -43,7 +38,8 @@ namespace DataLoader
                 Log.Verbose("Batch of {0} rows was inserted", rows);
                 succeeded += rows;
             }
-
+            
+            Log.Verbose("{0} rows were inserted", succeeded);
             return succeeded;
         }
     }

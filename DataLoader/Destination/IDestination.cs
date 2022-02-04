@@ -9,6 +9,11 @@ namespace DataLoader.Destination
         int Save(IEnumerable<TValue> data, CancellationToken token);
     }
 
+    public interface IClearableDestination<TValue>: IDestination<TValue>
+    {
+        void Clear(CancellationToken token);
+    }
+
     public interface IIncrementalDestination<TKey, TValue> : IDestination<TValue>
     {
         TKey GetLastKey(CancellationToken token);

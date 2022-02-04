@@ -9,15 +9,6 @@ namespace DataLoader.Source
     {
         public abstract string Name { get; }
         private readonly SplitterOptions _options;
-        
-        public class SplitterOptions
-        {
-            public uint BatchingFactor;
-            public uint FullLoadingBatchIncrement;
-            public uint IncrementalLoadingBatchIncrement;
-
-            public static SplitterOptions Default = new SplitterOptions { BatchingFactor = 50, FullLoadingBatchIncrement = 100_000_000, IncrementalLoadingBatchIncrement = 1_000_000_000 };
-        }
 
         protected RowVersionBatchSplitter(SplitterOptions options)
         {
@@ -27,7 +18,6 @@ namespace DataLoader.Source
         public IEnumerable<IEnumerable<T>> GetBatches(byte[] rowVersionFrom, byte[] rowVersionTo = default, CancellationToken token = default)
         {
             byte[] fromRowVersion;
-            var batchingFactor = _options.BatchingFactor;
             var isFullLoad = false;
 
             var sourceMaxRowVersion = rowVersionTo ?? GetMaxRowVersion(token);
@@ -40,9 +30,9 @@ namespace DataLoader.Source
             if (rowVersionFrom is null || rowVersionFrom.Length == 0)
             {
                 //means this is initial load, expect huge number of rows
-                fromRowVersion = GetMinRowVersion(token) ?? new byte[8];
+                fromRowVersion = GetMinRowVersion(token);
+                fromRowVersion = UlongToRowVersion(RowVersionToUlong(fromRowVersion) - 1);
                 isFullLoad = true;
-                batchingFactor *= 1000;
             }
             else
                 fromRowVersion = rowVersionFrom;
@@ -63,28 +53,28 @@ namespace DataLoader.Source
                     var rvTo = UlongToRowVersion(batchEnd);
                     Log.Verbose("Querying batch #{0}, rows between RowVersions \"{1}\" and \"{2}\"", i, ByteArrayToString(rvFrom), ByteArrayToString(rvTo));
                     yield return GetRows(rvFrom, rvTo, token);
-                    batchStart += _options.FullLoadingBatchIncrement + 1;
+                    batchStart += _options.FullLoadingBatchIncrement;
                     batchEnd += _options.FullLoadingBatchIncrement;
                     i++;
                 }
             }
             else
             {
-                var batchIncrement = (to - from) / batchingFactor;
+                var batchIncrement = (to - from) / _options.BatchingFactor;
 
                 if (batchIncrement <= _options.IncrementalLoadingBatchIncrement)
                 {
                     Log.Debug("Incremental loading rows between max known RowVersion = \"{0}\" and source max RowVersion = \"{1}\" in {2} batches",
-                        ByteArrayToString(fromRowVersion), ByteArrayToString(sourceMaxRowVersion), batchingFactor);
+                        ByteArrayToString(fromRowVersion), ByteArrayToString(sourceMaxRowVersion), _options.BatchingFactor);
 
                     var batchStart = from;
-                    for (var i = 0; i < batchingFactor; i++)
+                    for (var i = 0; i < _options.BatchingFactor; i++)
                     {
                         var rvFrom = UlongToRowVersion(batchStart);
                         var rvTo = UlongToRowVersion(batchStart + batchIncrement);
                         Log.Verbose("Querying batch #{0}, rows between RowVersions \"{1}\" and \"{2}\"", i, ByteArrayToString(rvFrom), ByteArrayToString(rvTo));
                         yield return GetRows(rvFrom, rvTo, token);
-                        batchStart += batchIncrement + 1;
+                        batchStart += batchIncrement;
                     }
                 }
                 else
@@ -101,7 +91,7 @@ namespace DataLoader.Source
                         var rvTo = UlongToRowVersion(batchEnd);
                         Log.Verbose("Querying batch #{0}, rows between RowVersions \"{1}\" and \"{2}\"", i, ByteArrayToString(rvFrom), ByteArrayToString(rvTo));
                         yield return GetRows(rvFrom, rvTo, token);
-                        batchStart += _options.IncrementalLoadingBatchIncrement + 1;
+                        batchStart += _options.IncrementalLoadingBatchIncrement;
                         batchEnd += _options.IncrementalLoadingBatchIncrement;
                         i++;
                     }
@@ -109,7 +99,7 @@ namespace DataLoader.Source
             }
         }
         
-        public IEnumerable<T> GetRows(CancellationToken token) => GetRows(new byte[0], default, default);
+        public IEnumerable<T> GetRows(CancellationToken token) => GetRows(new byte[] {0}, default, default);
 
         public byte[] GetLastKey(CancellationToken token) => GetMaxRowVersion(token);
         
@@ -155,5 +145,14 @@ namespace DataLoader.Source
             }
             return retVal;
         }
+    }
+    
+    public class SplitterOptions
+    {
+        public uint BatchingFactor;
+        public uint FullLoadingBatchIncrement;
+        public uint IncrementalLoadingBatchIncrement;
+
+        public static SplitterOptions Default = new SplitterOptions { BatchingFactor = 50, FullLoadingBatchIncrement = 100_000_000, IncrementalLoadingBatchIncrement = 1_000_000_000 };
     }
 }

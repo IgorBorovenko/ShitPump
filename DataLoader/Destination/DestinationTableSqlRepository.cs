@@ -9,7 +9,9 @@ using Dapper;
 
 namespace DataLoader.Destination
 {
-    public class DestinationTableSqlRepository<T> : IBatchableDestination<byte[], T>,IDisposable where T: ITableRecord
+    public class DestinationTableSqlRepository<T> : IBatchableDestination<byte[], T>, IIncrementalDestination<byte[], T>, 
+        IClearableDestination<T>, IDisposable 
+        where T: ITableRecord
     {
         private readonly SqlConnection _connection;
         private readonly int _commandTimeout;
@@ -134,6 +136,13 @@ ORDER BY ORDINAL_POSITION";
         public void Dispose()
         {
             _connection?.Dispose();
+        }
+
+        public void Clear(CancellationToken token)
+        {
+            string sql = $"TRUNCATE TABLE {Name}";
+            var cmd = new CommandDefinition(sql, null, null, _commandTimeout, CommandType.Text, CommandFlags.None, token);
+            _connection.Execute(cmd);
         }
     }
 }

@@ -58,7 +58,7 @@ namespace TriosDataLoader
             var table = container.Resolve<ISyncedTable<Input.ScanWorkflowScanSegment, Output.ScanWorkflowScanSegment>>();
             var copiedRows = table.Sync();
             
-            Log.Debug("Total copied rows: {0}, time took: {1}", copiedRows, sw.Elapsed);
+            Log.Debug("ScanWorkflowScanSegment sync complete and took: {0}", sw.Elapsed);
         }
 
         class DemystifiedExceptionStackTraceEnricher : ILogEventEnricher
