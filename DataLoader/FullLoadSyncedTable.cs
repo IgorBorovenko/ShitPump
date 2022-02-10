@@ -25,7 +25,7 @@ namespace DataLoader
             _destination.Clear(token);
             Log.Verbose("Destination cleared");
 
-            var data = _source.GetRows();
+            var data = _source.GetRows(token);
 
             var mappedData = _mapper.Map(data);
 

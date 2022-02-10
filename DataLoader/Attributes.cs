@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DataLoader
 {
-    public interface ITableRecord { }
-
-    public static class TableRecordExtensions
+    public static class AttributeExtensions
     {
         public static TableAttribute GetTableAttributeFromClass(this Type type)  => 
             (TableAttribute)type.GetCustomAttributes(typeof(TableAttribute), true).Single();
@@ -22,6 +21,9 @@ namespace DataLoader
 
         public TableAttribute(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException($"Argument cannot be null or empty", nameof(name));
+
             Name = name;
         }
     }
@@ -31,7 +33,7 @@ namespace DataLoader
     {
         public string Name { get; }
 
-        public ColumnAttribute(string name)
+        public ColumnAttribute([CallerMemberName] string name = null)
         {
             Name = name;
         }
@@ -40,7 +42,7 @@ namespace DataLoader
     [AttributeUsage(AttributeTargets.Property)]
     public class RowVersionColumnAttribute : ColumnAttribute
     {
-        public RowVersionColumnAttribute(string name)
+        public RowVersionColumnAttribute([CallerMemberName] string name = null)
             :base(name)
         {
         }
@@ -49,7 +51,7 @@ namespace DataLoader
     [AttributeUsage(AttributeTargets.Property)]
     public class WholeLoadSucceededColumnAttribute : ColumnAttribute
     {
-        public WholeLoadSucceededColumnAttribute(string name)
+        public WholeLoadSucceededColumnAttribute([CallerMemberName] string name = null)
             : base(name)
         {
         }

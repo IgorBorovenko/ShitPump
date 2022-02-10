@@ -6,7 +6,7 @@ namespace DataLoader.Source
     public interface ISource<TValue>
     {
         string Name { get; }
-        IEnumerable<TValue> GetRows(CancellationToken token = default);
+        IEnumerable<TValue> GetRows(CancellationToken token);
     }
 
     public interface IIncrementalSource<TKey, TValue> : ISource<TValue>

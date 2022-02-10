@@ -99,7 +99,7 @@ namespace DataLoader.Source
             }
         }
         
-        public IEnumerable<T> GetRows(CancellationToken token) => GetRows(new byte[] {0}, default, default);
+        public IEnumerable<T> GetRows(CancellationToken token) => GetRows(default(byte[]), default(byte[]), token);
 
         public byte[] GetLastKey(CancellationToken token) => GetMaxRowVersion(token);
         

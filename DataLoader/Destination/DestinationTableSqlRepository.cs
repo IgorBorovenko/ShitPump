@@ -11,13 +11,12 @@ namespace DataLoader.Destination
 {
     public class DestinationTableSqlRepository<T> : IBatchableDestination<byte[], T>, IIncrementalDestination<byte[], T>, 
         IClearableDestination<T>, IDisposable 
-        where T: ITableRecord
     {
         private readonly SqlConnection _connection;
         private readonly int _commandTimeout;
-        private readonly TableAttribute _table = typeof(T).GetTableAttributeFromClass();
-        private readonly RowVersionColumnAttribute _rowVersionColumn = typeof(T).GetColumnAttributesFromClass().OfType<RowVersionColumnAttribute>().Single();
-        private readonly WholeLoadSucceededColumnAttribute _wholeLoadSucceededColumn = typeof(T).GetColumnAttributesFromClass().OfType<WholeLoadSucceededColumnAttribute>().Single();
+        private readonly TableAttribute _table;
+        private readonly RowVersionColumnAttribute _rowVersionColumn;
+        private readonly WholeLoadSucceededColumnAttribute _wholeLoadSucceededColumn;
 
         public int BulkBatchSize = 10000;
         public int BulkNotifyAfter = 10000;
@@ -26,26 +25,44 @@ namespace DataLoader.Destination
 
         public DestinationTableSqlRepository(string connectionString, int commandTimeout = 60)
         {
+            try
+            {
+                _table = typeof(T).GetTableAttributeFromClass();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidOperationException($"{typeof(T)} must be decorated with {typeof(TableAttribute)}", e);
+            }
+
+            try
+            {
+                _rowVersionColumn = typeof(T).GetColumnAttributesFromClass().OfType<RowVersionColumnAttribute>().Single();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidOperationException($"{typeof(T)} must have one property decorated with {typeof(RowVersionColumnAttribute)}", e);
+            }
+
+            try
+            {
+                _wholeLoadSucceededColumn = typeof(T).GetColumnAttributesFromClass().OfType<WholeLoadSucceededColumnAttribute>().Single();
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidOperationException($"{typeof(T)} must have one property decorated with {typeof(WholeLoadSucceededColumnAttribute)}", e);
+            }
+
             _connection = new SqlConnection(connectionString);
             _connection.Open();
             _commandTimeout = commandTimeout;
             
             string sql = @"
-SELECT COLUMN_NAME
-FROM INFORMATION_SCHEMA.COLUMNS 
-WHERE '[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']' = @Name
-ORDER BY ORDINAL_POSITION";
+SELECT [COLUMN_NAME]
+FROM [INFORMATION_SCHEMA].[COLUMNS]
+WHERE '[' + [TABLE_SCHEMA] + '].[' + [TABLE_NAME] + ']' = @Name
+ORDER BY [ORDINAL_POSITION]";
             var columns = _connection.Query<string> (sql, new { Name = this.Name });
-            
-            try
-            {
-                Mappings = MakeGetters(columns);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            Mappings = MakeGetters(columns);
         }
 
         private static Func<T, object>[] MakeGetters(IEnumerable<string> columns)

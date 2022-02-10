@@ -4,18 +4,18 @@ using DataLoader;
 namespace TriosDataLoader.Input
 {
     [Table("[DentalDesktopTRIOS].[ScanWorkflowScanSegment]")]
-    public class ScanWorkflowScanSegment: ITableRecord
+    public class ScanWorkflowScanSegment
     {
-        [Column("ScanWorkflowScanSegmentID")]
+        [Column]
         public Guid ScanWorkflowScanSegmentID { get; set; }
 
-        [Column("ScanWorkflowScanID")]
+        [Column]
         public Guid ScanWorkflowScanID { get; set; }
 
-        [Column("ScannerSerialNumber")]
+        [Column]
         public string ScannerSerialNumber { get; set; }
 
-        [RowVersionColumn("RowVersion")]
+        [RowVersionColumn]
         public byte[] RowVersion { get; set; }
     }
 }
