@@ -16,9 +16,11 @@ namespace DataLoader.Source
         private readonly TableAttribute _table;
         private readonly IEnumerable<ColumnAttribute> _columns;
         private readonly RowVersionColumnAttribute _rowVersionColumn;
+        private readonly static byte[] minRowVersion = new byte[] { 0 };
+        private readonly static byte[] maxRowVersion = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
         public override string Name => _table.Name;
-
+        
         public SourceTableSqlRepository(string connectionString, int commandTimeout = 60, SplitterOptions options = default)
             :base(options)
         {
@@ -56,8 +58,8 @@ namespace DataLoader.Source
 
         public override IEnumerable<T> GetRows(byte[] rowVersionFrom = default, byte[] rowVersionTo = default, CancellationToken token = default)
         {
-            rowVersionFrom = rowVersionFrom == default ? new byte[] { 0 } : rowVersionFrom;
-            rowVersionTo = rowVersionTo == default ? new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } : rowVersionTo;
+            rowVersionFrom = rowVersionFrom == default ? minRowVersion : rowVersionFrom;
+            rowVersionTo = rowVersionTo == default ? maxRowVersion : rowVersionTo;
 
             var columnsClause = string.Join(",", _columns.Select(x => x.Name));
             var sql = $"SELECT {columnsClause} FROM {_table.Name} WHERE @RowVersionFrom < {_rowVersionColumn.Name} AND {_rowVersionColumn.Name} <= @RowVersionTo";
